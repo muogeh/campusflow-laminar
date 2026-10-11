@@ -75,7 +75,16 @@ class TestTicketWorkflow(unittest.TestCase):
             update_status([ticket], "T001", "in_progress")
 
         update_status([ticket], "T001", "open")
+
         self.assertEqual(ticket["status"], "open")
+        self.assertEqual(ticket["assigned_to"], "Ada")
+
+        # Confirm the reopened ticket can be changed again.
+        assign_ticket([ticket], "T001", "Grace")
+        self.assertEqual(ticket["assigned_to"], "Grace")
+
+        update_status([ticket], "T001", "in_progress")
+        self.assertEqual(ticket["status"], "in_progress")
 
     def test_invalid_transition_does_not_change_status(self):
         ticket = make_ticket(assigned_to="Ada")

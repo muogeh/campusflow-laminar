@@ -3,6 +3,34 @@ from itertools import count
 
 _ticket_numbers = count(1)
 
+def initialise_ticket_numbers(tickets):
+    global _ticket_numbers
+
+    numbers = []
+
+    for ticket in tickets:
+        ticket_id = ticket.get("id")
+
+        if (
+            not isinstance(ticket_id, str)
+            or not ticket_id.startswith("T")
+            or not ticket_id[1:].isascii()
+            or not ticket_id[1:].isdigit()
+        ):
+            raise ValueError("Each saved ticket must have an ID such as T001.")
+
+        number = int(ticket_id[1:])
+
+        if number < 1:
+            raise ValueError("Saved ticket IDs must start at T001.")
+
+        numbers.append(number)
+
+    if len(numbers) != len(set(numbers)):
+        raise ValueError("Saved tickets contain duplicate IDs.")
+
+    _ticket_numbers = count(max(numbers, default=0) + 1)
+
 _VALID_CATEGORIES = {
     "network": "Network",
     "hardware": "Hardware",

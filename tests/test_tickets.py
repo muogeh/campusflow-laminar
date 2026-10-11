@@ -35,11 +35,16 @@ class TestTicketCreation(unittest.TestCase):
     def test_create_ticket_with_valid_data(self):
         ticket = create_ticket("Wi-Fi unavailable", "Network", "high", 12)
 
+    def test_create_ticket_with_valid_data(self):
+        ticket = create_ticket("Wi-Fi unavailable", "Network", "high", 12)
+
         self.assertEqual(ticket["title"], "Wi-Fi unavailable")
         self.assertEqual(ticket["category"], "Network")
         self.assertEqual(ticket["urgency"], "high")
         self.assertEqual(ticket["affected_users"], 12)
         self.assertEqual(ticket["priority"], "critical")
+        self.assertEqual(ticket["status"], "open")
+        self.assertIsNone(ticket["assigned_to"])
         self.assertRegex(ticket["id"], r"^T\d{3,}$")
 
     def test_ids_are_automatic_unique_and_sequential(self):

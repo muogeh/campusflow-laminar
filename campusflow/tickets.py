@@ -55,10 +55,12 @@ def create_ticket(title, category, urgency, affected_users):
     ticket_id = f"T{next(_ticket_numbers):03d}"
 
     return {
-        "id": ticket_id,
-        "title": title.strip(),
-        "category": _VALID_CATEGORIES[category_key],
-        "urgency": urgency_value,
-        "affected_users": affected_users,
-        "priority": priority,
-    }
+            "id": ticket_id,
+            "title": title.strip(),
+            "category": _VALID_CATEGORIES[category_key],
+            "urgency": urgency_value,
+            "affected_users": affected_users,
+            "priority": priority,
+            "status": "open",
+            "assigned_to": None,
+        }

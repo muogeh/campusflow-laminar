@@ -8,8 +8,8 @@ All the real work is done by functions in the campusflow/ package.
 
 from campusflow.tickets import create_ticket, initialise_ticket_numbers
 from campusflow.storage import load_tickets, save_tickets
-#from campusflow.workflow import assign_ticket, change_status, reopen_ticket
-#from campusflow.reports import get_work_queue, build_report
+from campusflow.workflow import assign_ticket, update_status, get_work_queue
+from campusflow.reports import generate_report
 
 
 def print_ticket(ticket):
@@ -90,7 +90,7 @@ def handle_change_status(tickets):
     ticket_id = ask_ticket_id()
     new_status = input("New status (in_progress, resolved): ").strip().lower()
 
-    ticket = change_status(tickets, ticket_id, new_status)
+    ticket = update_status(tickets, ticket_id, new_status)
     save_tickets(tickets)
 
     print("Status updated successfully!")
@@ -100,8 +100,9 @@ def handle_change_status(tickets):
 def handle_reopen(tickets):
     print("\n--- REOPEN TICKET ---")
     ticket_id = ask_ticket_id()
+    new_status = input("Re-open status (open): ").strip().lower()
 
-    ticket = reopen_ticket(tickets, ticket_id)
+    ticket = update_status(tickets, ticket_id, new_status) #this
     save_tickets(tickets)
 
     print("Ticket reopened successfully!")
@@ -122,7 +123,7 @@ def handle_queue(tickets):
 
 def handle_report(tickets):
     print("\n--- REPORT ---")
-    report = build_report(tickets)
+    report = generate_report(tickets)
 
     print("Total tickets:", report["total"])
 
